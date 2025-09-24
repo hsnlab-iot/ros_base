@@ -1,0 +1,19 @@
+FROM ros_base:2509
+
+ARG TARGETARCH
+RUN if [ "$TARGETARCH" = "arm64" ]; then \
+      echo "Skipping build for arm64" && exit 0; \
+    fi
+
+RUN apt update && apt install -y --no-install-recommends \
+  python3 python3-venv python3-pip
+
+SHELL ["/bin/bash", "-c"]
+
+RUN \
+  python3 -m venv /opt/yolo.venv && \
+  source /opt/yolo.venv/bin/activate && \
+  python -m pip install --upgrade pip && \
+  pip install ultralytics
+
+RUN echo "source /opt/ros/jazzy/setup.bash" >> /root/.bashrc
