@@ -18,9 +18,10 @@ RUN \
 #    apt remove -y ros-jazzy-rmw-zenoh-cpp ros-jazzy-zenoh-cpp-vendor && \
     mkdir -p /opt/ws/rmw_zenoh/src && cd /opt/ws/rmw_zenoh/src && \
     git clone https://github.com/ros2/rmw_zenoh.git -b jazzy && \
-    cd /opt/ws/rmw_zenoh && rosdep install --from-paths src --ignore-src --rosdistro jazzy -y && \
-    source /opt/ros/jazzy/setup.bash && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release && \
-    rm -rf build/ log/ && \
+    cd /opt/ws/rmw_zenoh && rosdep install --from-paths src --ignore-src --rosdistro jazzy -y
+RUN \
+    source /opt/ros/jazzy/setup.bash && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-select rmw-zenoh-cpp && \
+    #rm -rf build/ log/ && \
     echo "source /opt/ws/rmw_zenoh/install/setup.bash" >> /root/.bashrc
 
 RUN echo "source /opt/ros/jazzy/setup.bash" >> /root/.bashrc
