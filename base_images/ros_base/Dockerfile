@@ -13,6 +13,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 SHELL ["/bin/bash", "-c"]
 
+RUN apt remove -y libgtest-dev libgmock-dev || true
 RUN \
     apt update && \
     mkdir -p /opt/ws/rmw_zenoh/src && cd /opt/ws/rmw_zenoh/src && \
