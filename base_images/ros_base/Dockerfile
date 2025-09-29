@@ -24,6 +24,15 @@ SHELL ["/bin/bash", "-c"]
 #    echo "source /opt/ws/rmw_zenoh/install/setup.bash" >> /root/.bashrc
 
 COPY patch/ /tmp/
-RUN apt install -y /tmp/ros-jazzy-rmw-zenoh-cpp_0.2.7-2noble.20250924.000000_amd64.deb
+RUN \
+RUN apt-get update && \
+    if [ "$TARGETARCH" = "amd64" ]; then \
+        apt-get install -y --no-install-recommends /tmp/ros-jazzy-rmw-zenoh-cpp_0.2.7-2noble.20250924.000000_amd64.deb ; \
+    elif [ "$TARGETARCH" = "arm64" ]; then \
+        apt-get install -y --no-install-recommends ros-jazzy-rmw-zenoh-cpp ; \
+    else \
+        echo "Unsupported architecture: $TARGETARCH"; \
+        exit 1; \
+    fi
 
 RUN echo "source /opt/ros/jazzy/setup.bash" >> /root/.bashrc
