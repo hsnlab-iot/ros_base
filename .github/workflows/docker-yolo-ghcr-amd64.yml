@@ -2,7 +2,8 @@ name: Build and Push YOLO to GHCR (AMD64)
 
 on:
   push:
-    branches: [main, 2509]
+    branches: [main]
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io

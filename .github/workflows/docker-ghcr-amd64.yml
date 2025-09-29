@@ -2,11 +2,13 @@ name: Build and Push to GHCR (AMD64)
 
 on:
   push:
-    branches: [main, 2509]
+    branches: [main]
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME_YOLO: ${{ github.repository }}_YOLO
 
 jobs:
   build-and-push:
@@ -39,18 +41,44 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=raw,value=2509
           labels: |
             org.opencontainers.image.title=ros_base
             org.opencontainers.image.description=ROS base image for IoT workflows
             org.opencontainers.image.source=https://github.com/hsnlab-iot/ros_base
-            
+              
+      - name: Extract Docker metadata YOLO
+        id: meta_yolo
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_YOLO }}
+          tags: |
+            type=ref,event=branch
+          labels: |
+            org.opencontainers.image.title=ros_yolo_base
+            org.opencontainers.image.description=ROS and YOLO base image for IoT workflows
+            org.opencontainers.image.source=https://github.com/hsnlab-iot/ros_base
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: ./base_images/ros_base
           file: ./base_images/ros_base/Dockerfile
           push: true
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           platforms: linux/amd64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build and push Docker image YOLO
+        uses: docker/build-push-action@v5
+        with:
+          context: ./base_images/ros_yolo_base
+          file: ./base_images/ros_yolo_base/Dockerfile
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64
+          tags: ${{ steps.meta_yolo.outputs.tags }}
+          labels: ${{ steps.meta_yolo.outputs.labels }}
