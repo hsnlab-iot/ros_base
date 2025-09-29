@@ -1,8 +1,6 @@
 name: Build and Push to GHCR (ARM64)
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 env:
@@ -38,6 +36,12 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+          labels: |
+            org.opencontainers.image.title=ros_base
+            org.opencontainers.image.description=ROS base image for IoT workflows
+            org.opencontainers.image.source=https://github.com/hsnlab-iot/ros_base
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
