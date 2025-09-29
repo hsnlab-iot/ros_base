@@ -1,9 +1,6 @@
-FROM ros_base:2509
+FROM ghcr.io/hsnlab-iot/ros_base:main
 
 ARG TARGETARCH
-RUN if [ "$TARGETARCH" = "arm64" ]; then \
-      echo "Skipping build for arm64" && exit 0; \
-    fi
 
 RUN apt update && apt install -y --no-install-recommends \
   python3 python3-venv python3-pip
