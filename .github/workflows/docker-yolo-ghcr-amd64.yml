@@ -5,7 +5,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ros_yolo_base
+  IMAGE_NAME: hsniot/ros_yolo_base
 
 jobs:
   build-and-push_yolo:
@@ -44,7 +44,7 @@ jobs:
         run: df -h
 
       - name: make more space
-        run: sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost "$AGENT_TOOLSDIRECTORY"
+        run: sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost "$AGENT_TOOLSDIRECTORY" && df -h
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
