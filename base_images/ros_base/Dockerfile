@@ -24,15 +24,20 @@ SHELL ["/bin/bash", "-c"]
 #    echo "source /opt/ws/rmw_zenoh/install/setup.bash" >> /root/.bashrc
 
 COPY patch/ /tmp/
-RUN \
+
 RUN apt-get update && \
-    if [ "$TARGETARCH" = "amd64" ]; then \
-        apt-get install -y --no-install-recommends /tmp/ros-jazzy-rmw-zenoh-cpp_0.2.7-2noble.20250924.000000_amd64.deb ; \
-    elif [ "$TARGETARCH" = "arm64" ]; then \
-        apt-get install -y --no-install-recommends ros-jazzy-rmw-zenoh-cpp ; \
-    else \
-        echo "Unsupported architecture: $TARGETARCH"; \
-        exit 1; \
-    fi
+  if [ "$TARGETARCH" = "amd64" ]; then \
+    mkdir -p /opt/ws/rmw_zenoh/src && cd /opt/ws/rmw_zenoh/src && \
+    git clone https://github.com/ros2/rmw_zenoh.git -b jazzy && \
+    cd /opt/ws/rmw_zenoh && rosdep install --from-paths src --ignore-src --rosdistro jazzy -y
+    source /opt/ros/jazzy/setup.bash && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-skip gtest_vendor gmock_vendor && \
+    rm -rf build/ log/ && \
+    echo "source /opt/ws/rmw_zenoh/install/setup.bash" >> /root/.bashrc
+  elif [ "$TARGETARCH" = "arm64" ]; then \
+    apt-get install -y --no-install-recommends ros-jazzy-rmw-zenoh-cpp ; \
+  else \
+    echo "Unsupported architecture: $TARGETARCH"; \
+    exit 1; \
+  fi
 
 RUN echo "source /opt/ros/jazzy/setup.bash" >> /root/.bashrc
