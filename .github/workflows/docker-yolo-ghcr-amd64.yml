@@ -40,6 +40,12 @@ jobs:
             org.opencontainers.image.description=ROS YOLO base image for IoT workflows
             org.opencontainers.image.source=https://github.com/hsnlab-iot/ros_base
             
+      - name: Show disk usage
+        run: df -h
+
+      - name: make more space
+        run: sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost "$AGENT_TOOLSDIRECTORY"
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
