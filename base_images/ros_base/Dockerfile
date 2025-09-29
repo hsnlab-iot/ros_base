@@ -22,7 +22,7 @@ RUN apt-get update && \
     cd /opt/ws/rmw_zenoh && rosdep install --from-paths src --ignore-src --rosdistro jazzy -y \
     source /opt/ros/jazzy/setup.bash && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-skip gtest_vendor gmock_vendor && \
     rm -rf build/ log/ && \
-    echo "source /opt/ws/rmw_zenoh/install/setup.bash" >> /root/.bashrc
+    echo "source /opt/ws/rmw_zenoh/install/setup.bash" >> /root/.bashrc \
   elif [ "$TARGETARCH" = "arm64" ]; then \
     apt-get install -y --no-install-recommends ros-jazzy-rmw-zenoh-cpp ; \
   else \
