@@ -9,8 +9,7 @@ SHELL ["/bin/bash", "-c"]
 
 RUN \
   python3 -m venv /opt/yolo.venv && \
-  source /opt/yolo.venv/bin/activate && \
-  python -m pip install --upgrade pip && \
-  pip install ultralytics
+  /opt/yolo.venv/bin/pip install --upgrade pip && \
+  /opt/yolo.venv/bin/pip install ultralytics
 
 RUN echo "source /opt/ros/jazzy/setup.bash" >> /root/.bashrc
