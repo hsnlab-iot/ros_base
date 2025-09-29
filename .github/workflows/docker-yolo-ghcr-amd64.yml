@@ -1,4 +1,4 @@
-name: Build and Push to GHCR (AMD64)
+name: Build and Push YOLO to GHCR (AMD64)
 
 on:
   push:
