@@ -1,4 +1,4 @@
-FROM ghcr.io/hsnlab-iot/ros_base:main
+FROM ghcr.io/hsnlab-iot/ros_base
 
 ARG TARGETARCH
 
