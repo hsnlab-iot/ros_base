@@ -5,6 +5,6 @@ group "default" {
 target "ros2base" {
   context = "base_images/ros_base"
   dockerfile = "Dockerfile"
-  tags = ["ros_base:2509"]
+  tags = ["ros_base:2610"]
   platforms = ["linux/arm64", "linux/amd64"]
 }

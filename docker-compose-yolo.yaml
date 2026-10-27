@@ -2,12 +2,12 @@ services:
   ros2base:
     build:
       context: base_images/ros_base
-    image: ros_base:2509
+    image: ros_base:2610
 
   ros2yolobase:
     build:
       context: base_images/ros_yolo_base
-    image: ros_yolo_base:2509
+    image: ros_yolo_base:2610
     depends_on:
       - ros2base
     platform: linux/amd64
