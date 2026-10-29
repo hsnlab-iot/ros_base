@@ -2,10 +2,16 @@ name: Build and Push YOLO to GHCR (AMD64)
 
 on:
   workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Docker image tag"
+        required: true
+        default: "2511"
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository_owner }}/ros_yolo_base
+  IMAGE_TAG: ${{ github.event.inputs.image_tag }}
 
 jobs:
   build-and-push_yolo:
@@ -34,7 +40,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
+            type=raw,value=${{ env.IMAGE_TAG }}
           labels: |
             org.opencontainers.image.title=ros_yolo_base
             org.opencontainers.image.description=ROS YOLO base image for IoT workflows
